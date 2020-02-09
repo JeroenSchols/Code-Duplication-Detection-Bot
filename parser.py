@@ -3,6 +3,13 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.stem import PorterStemmer
 
 
+def parse_and_preprocess_requirements(inputFile):
+    req_tokens = parse_requirements(inputFile)
+    req_tokens = remove_stop_words(req_tokens)
+    req_tokens = stem_words(req_tokens)
+    return req_tokens
+
+
 def parse_requirements(inputFile):
     """
     parse a high.csv or low.csv file and tokenize it
