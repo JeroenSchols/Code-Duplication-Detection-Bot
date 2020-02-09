@@ -5,5 +5,7 @@ FROM python:3
  ADD requirements.txt /
 
  RUN pip install -r requirements.txt
+ RUN python -m nltk.downloader punkt
+ RUN python -m nltk.downloader stopwords
 
  ENTRYPOINT [ "python", "./entry_script.py" ]   

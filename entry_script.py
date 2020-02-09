@@ -54,6 +54,9 @@ if __name__ == "__main__":
     '''
 
     low_tokens = parser.parse_requirements(open("/input/low.csv", "r"))
-    high_token = parser.parse_requirements(open("/input/high.csv", "r"))
+    print(low_tokens)
+    low_tokens = parser.remove_stop_words(low_tokens)
+    print(low_tokens)
+
 
     write_output_file()
