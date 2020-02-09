@@ -1,5 +1,7 @@
-from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
+from nltk.tokenize import RegexpTokenizer
+from nltk.stem import PorterStemmer
+
 
 def parse_requirements(inputFile):
     """
@@ -21,4 +23,13 @@ def remove_stop_words(req_tokens):
     stop_words = set(stopwords.words('english'))
     for req in req_tokens:
         req['tokens'] = [w for w in req['tokens'] if not w in stop_words]
+    return req_tokens
+
+
+def stem_words(req_tokens):
+    """
+    stem words from the list of tokens
+    """
+    ps = PorterStemmer()
+    for req in req_tokens: req['tokens'] = [ps.stem(w) for w in req['tokens']]
     return req_tokens

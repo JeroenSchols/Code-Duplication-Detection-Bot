@@ -57,6 +57,8 @@ if __name__ == "__main__":
     print(low_tokens)
     low_tokens = parser.remove_stop_words(low_tokens)
     print(low_tokens)
+    low_tokens = parser.stem_words(low_tokens)
+    print(low_tokens)
 
 
     write_output_file()
