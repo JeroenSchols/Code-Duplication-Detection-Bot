@@ -1,24 +1,17 @@
-import csv
 import sys
 import parser
 import vector_representer
 import trace_link_generator
 
 
-def write_output_file():
+def write_output_file(trace_links):
     """
-    Writes a dummy output file using the python csv writer, update this
-    to accept as parameter the found trace links.
+    outputs the trace links in csv format
     """
-    with open('/output/links.csv', 'w') as csvfile:
-        writer = csv.writer(csvfile, delimiter=",", quotechar="\"", quoting=csv.QUOTE_MINIMAL)
-
-        fieldnames = ["id", "links"]
-
-        writer.writerow(fieldnames)
-
-        writer.writerow(["UC1", "L1, L34, L5"])
-        writer.writerow(["UC2", "L5, L4"])
+    f = open('/output/links.csv', 'w')
+    f.write("id,links\n")
+    for h in trace_links:
+        f.write(h + ",\"" + ','.join(trace_links[h]) + "\"\n")
 
 
 if __name__ == "__main__":
@@ -57,4 +50,4 @@ if __name__ == "__main__":
 
     trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
 
-    write_output_file()
+    write_output_file(trace_links)
