@@ -52,8 +52,6 @@ if __name__ == "__main__":
     high_tokens = parser.parse_and_preprocess_requirements(open("/input/high.csv", "r"))
 
     low_tokens, high_tokens = vector_representer.vectorize(low_tokens, high_tokens)
-
-    print(low_tokens)
-    print(high_tokens)
+    sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
 
     write_output_file()

@@ -1,4 +1,5 @@
 import math
+from scipy import spatial
 
 
 def vectorize(low_tokens, high_tokens):
@@ -47,3 +48,16 @@ def set_vector_repesentation(req_tokens, master_vocab):
             vector[word] = count * master_vocab[word]
         req['vector'] = vector
     return req_tokens
+
+
+def calc_similarity_matrix(low_tokens, high_tokens):
+    """
+    calculates a similarity matrix[h[id], l[id]] based on cosine similarity
+    """
+    sim_matrix = {}
+    for h in high_tokens:
+        sim_vector = {}
+        for l in low_tokens:
+            sim_vector[l['id']] = 1 - spatial.distance.cosine(list(l['vector'].values()), list(h['vector'].values()))
+        sim_matrix[h['id']] = sim_vector
+    return sim_matrix
