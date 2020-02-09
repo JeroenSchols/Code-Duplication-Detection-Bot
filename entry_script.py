@@ -1,5 +1,6 @@
 import csv
 import sys
+import parser
 
 
 
@@ -51,5 +52,8 @@ if __name__ == "__main__":
     assignment on Canvas. Please ensure that you take care to deliver clean,
     modular, and well-commented code.
     '''
+
+    low_tokens = parser.parse_requirements(open("/input/low.csv", "r"))
+    high_token = parser.parse_requirements(open("/input/high.csv", "r"))
 
     write_output_file()
