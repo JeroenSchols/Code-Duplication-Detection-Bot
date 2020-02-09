@@ -2,6 +2,7 @@ import csv
 import sys
 import parser
 import vector_representer
+import trace_link_generator
 
 
 def write_output_file():
@@ -53,5 +54,7 @@ if __name__ == "__main__":
 
     low_tokens, high_tokens = vector_representer.vectorize(low_tokens, high_tokens)
     sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
+
+    trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
 
     write_output_file()
