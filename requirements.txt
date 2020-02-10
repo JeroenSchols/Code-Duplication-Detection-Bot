@@ -1,2 +1,3 @@
 nltk
 scipy
+contractions

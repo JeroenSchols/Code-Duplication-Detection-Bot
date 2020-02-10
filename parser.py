@@ -1,6 +1,17 @@
 from nltk.corpus import stopwords
-from nltk.tokenize import RegexpTokenizer
 from nltk.stem import PorterStemmer
+from nltk import word_tokenize
+import contractions
+
+
+def parse_trace_links(inputFile):
+    trace_links = {}
+    for cnt, line in enumerate(inputFile):
+        if (cnt == 0): continue  ## ignores the header
+        trace_links[line.split(',')[0]] = {line.split(',')[1]}
+
+    inputFile.close()
+    return trace_links
 
 
 def parse_and_preprocess_requirements(inputFile):
@@ -18,8 +29,11 @@ def parse_requirements(inputFile):
     req_tokens = []
     for cnt, line in enumerate(inputFile):
         if (cnt == 0): continue  ## ignores the header
-        tokens = RegexpTokenizer(r'\w+').tokenize(line.split(',')[1])
-        req_tokens.append({'id': line.split(',')[0], 'tokens': [token.lower() for token in tokens]})
+        id = line.split(',\"')[0]
+        sentence = contractions.fix(str(line.split('\"')[1]))
+        tokens = [word.lower() for word in word_tokenize(sentence) if word.isalpha()]
+        req_tokens.append({'id': id, 'tokens': tokens})
+    inputFile.close()
     return req_tokens
 
 
