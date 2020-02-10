@@ -7,9 +7,11 @@ import contractions
 def parse_trace_links(inputFile):
     trace_links = {}
     for cnt, line in enumerate(inputFile):
-        if (cnt == 0): continue  ## ignores the header
-        trace_links[line.split(',')[0]] = {line.split(',')[1]}
-
+        if cnt == 0: continue  # ignores the header
+        high_id = line.split(',\"')[0]
+        low_ids = line.split('\"')[1].split(',')
+        if low_ids[0] == '': low_ids = []
+        trace_links[high_id] = low_ids
     inputFile.close()
     return trace_links
 
@@ -28,7 +30,7 @@ def parse_requirements(inputFile):
     """
     req_tokens = []
     for cnt, line in enumerate(inputFile):
-        if (cnt == 0): continue  ## ignores the header
+        if cnt == 0: continue  # ignores the header
         id = line.split(',\"')[0]
         sentence = contractions.fix(str(line.split('\"')[1]))
         tokens = [word.lower() for word in word_tokenize(sentence) if word.isalpha()]

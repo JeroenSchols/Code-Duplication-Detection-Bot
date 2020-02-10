@@ -12,6 +12,7 @@ def write_output_file(trace_links):
     f.write("id,links\n")
     for h in trace_links:
         f.write(h + ",\"" + ','.join(trace_links[h]) + "\"\n")
+    f.close()
 
 
 if __name__ == "__main__":
@@ -49,5 +50,7 @@ if __name__ == "__main__":
     sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
 
     trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
-
     write_output_file(trace_links)
+
+    predicted_trace_links = parser.parse_trace_links(open("/output/links.csv", "r"))
+    true_trace_links = parser.parse_trace_links(open("/input/links.csv", "r"))
