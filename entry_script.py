@@ -2,6 +2,7 @@ import sys
 import parser
 import vector_representer
 import trace_link_generator
+import evaluator
 
 
 def write_output_file(trace_links):
@@ -54,3 +55,6 @@ if __name__ == "__main__":
 
     predicted_trace_links = parser.parse_trace_links(open("/output/links.csv", "r"))
     true_trace_links = parser.parse_trace_links(open("/input/links.csv", "r"))
+
+    conf_matrix = evaluator.create_confusion_matrix(predicted_trace_links, true_trace_links, low_tokens)
+    print(conf_matrix)

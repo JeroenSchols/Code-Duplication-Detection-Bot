@@ -4,6 +4,7 @@ FROM python:3
  ADD parser.py /
  ADD vector_representer.py /
  ADD trace_link_generator.py /
+ ADD evaluator.py /
 
  ADD requirements.txt /
 
