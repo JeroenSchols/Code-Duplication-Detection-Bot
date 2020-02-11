@@ -15,8 +15,8 @@ def create_confusion_matrix(predicted_trace_links, true_trace_links, low_tokens)
             else:
                 conf_matrix['TN'] += 1
 
-    conf_matrix['recall'] = conf_matrix['TP'] / (conf_matrix['TP'] + conf_matrix['FN'])
-    conf_matrix['precision'] = conf_matrix['TP'] / (conf_matrix['TP'] + conf_matrix['FP'])
-    conf_matrix['f-measure'] = 2 * conf_matrix['precision'] * conf_matrix['recall'] / (conf_matrix['precision'] + conf_matrix['recall'])
+    conf_matrix['recall'] = conf_matrix['TP'] / (conf_matrix['TP'] + conf_matrix['FN'] + 0.0000000001)
+    conf_matrix['precision'] = conf_matrix['TP'] / (conf_matrix['TP'] + conf_matrix['FP'] + 0.0000000001)
+    conf_matrix['f-measure'] = 2 * conf_matrix['precision'] * conf_matrix['recall'] / (conf_matrix['precision'] + conf_matrix['recall'] + 0.0000000001)
 
     return conf_matrix

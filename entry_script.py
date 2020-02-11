@@ -1,5 +1,6 @@
 import sys
 import parser
+import probabilistic_model
 import vector_representer
 import trace_link_generator
 import evaluator
@@ -48,9 +49,16 @@ if __name__ == "__main__":
     high_tokens = parser.parse_and_preprocess_requirements(open("/input/high.csv", "r"))
 
     low_tokens, high_tokens = vector_representer.vectorize(low_tokens, high_tokens)
-    sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
 
+    if match_type <= 2 and False:
+        sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
+    else:
+        sim_matrix = probabilistic_model.calculate_probabilistic_similarity_matrix(low_tokens, high_tokens)
+
+    # if match_type <= 3:
     predicted_trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
+    # else:
+    #     predicted_trace_links = trace_link_generator.generate_trace_links_probablistic(low_tokens, high_tokens, match_type)
     write_output_file(predicted_trace_links)
 
     true_trace_links = parser.parse_trace_links(open("/input/links.csv", "r"))

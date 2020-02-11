@@ -56,9 +56,17 @@ def calc_similarity_matrix(low_tokens, high_tokens):
     calculates a similarity matrix[h[id], l[id]] based on cosine similarity
     """
     sim_matrix = {}
+    print('------')
+    print(low_tokens)
+    print('------')
+    print(high_tokens)
+    print('------')
     for h in high_tokens:
         sim_vector = {}
         for l in low_tokens:
-            sim_vector[l['id']] = 1 - spatial.distance.cosine(list(l['vector'].values()), list(h['vector'].values()))
+            ll = [w if w >= 1.5 else w for w in list(l['vector'].values())]
+            hl = [w if w >= 1.5 else w for w in list(h['vector'].values())]
+            dist = 1 - spatial.distance.cosine(ll, hl)
+            sim_vector[l['id']] = dist
         sim_matrix[h['id']] = sim_vector
     return sim_matrix
