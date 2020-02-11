@@ -8,12 +8,12 @@ def create_confusion_matrix(predicted_trace_links, true_trace_links, low_tokens)
             l_id = low_req['id']
             if (l_id in predicted_trace_links[h_id]) & (l_id in true_trace_links[h_id]):
                 conf_matrix['TP'] += 1
-            elif (l_id in predicted_trace_links[h_id]) & (l_id not in true_trace_links[h_id]):
+            elif l_id in predicted_trace_links[h_id]:
                 conf_matrix['FP'] += 1
             elif l_id in true_trace_links[h_id]:
-                conf_matrix['TN'] += 1
-            else:
                 conf_matrix['FN'] += 1
+            else:
+                conf_matrix['TN'] += 1
 
     conf_matrix['recall'] = conf_matrix['TP'] / (conf_matrix['TP'] + conf_matrix['FN'])
     conf_matrix['precision'] = conf_matrix['TP'] / (conf_matrix['TP'] + conf_matrix['FP'])
