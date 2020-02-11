@@ -9,11 +9,11 @@ def write_output_file(trace_links):
     """
     outputs the trace links in csv format
     """
-    f = open('/output/links.csv', 'w')
-    f.write("id,links\n")
-    for h in trace_links:
-        f.write(h + ",\"" + ','.join(trace_links[h]) + "\"\n")
-    f.close()
+    file = open('/output/links.csv', 'w')
+    file.write("id,links\n")
+    for h_id in trace_links:
+        file.write(h_id + ",\"" + ','.join(trace_links[h_id]) + "\"\n")
+    file.close()
 
 
 if __name__ == "__main__":
@@ -50,10 +50,9 @@ if __name__ == "__main__":
     low_tokens, high_tokens = vector_representer.vectorize(low_tokens, high_tokens)
     sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
 
-    trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
-    write_output_file(trace_links)
+    predicted_trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
+    write_output_file(predicted_trace_links)
 
-    predicted_trace_links = parser.parse_trace_links(open("/output/links.csv", "r"))
     true_trace_links = parser.parse_trace_links(open("/input/links.csv", "r"))
 
     conf_matrix = evaluator.create_confusion_matrix(predicted_trace_links, true_trace_links, low_tokens)

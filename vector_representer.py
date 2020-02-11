@@ -3,6 +3,9 @@ from scipy import spatial
 
 
 def vectorize(low_tokens, high_tokens):
+    """
+    adds a vector representation to low_tokens, high_tokens based on their shared master vocabulary
+    """
     master_vocab = create_master_vocab(low_tokens, high_tokens)
     low_tokens = set_vector_repesentation(low_tokens, master_vocab)
     high_tokens = set_vector_repesentation(high_tokens, master_vocab)
@@ -10,43 +13,41 @@ def vectorize(low_tokens, high_tokens):
 
 def create_master_vocab(low_tokens, high_tokens):
     """
-    creates a dictionary of words present in low and high- tokens
-    for every word in low_tokens union high_tokens
+    creates a dictionary of tokens present in low and high-requirements
+    for every token in low_tokens union high_tokens:
     master_vocab[word] = log2 (n / d)
     where n is the total number of requirements
-    where d is the number of requirements containing word
+    where d is the number of requirements containing token
     """
     n = len(low_tokens) + len(high_tokens)
-    count = {}
-    for req in low_tokens + high_tokens:
-        for token in set(req['tokens']):
+    count = {} # calculates the number of requirements containing a token
+    for requirement in low_tokens + high_tokens:
+        for token in set(requirement['tokens']):
             if token in count:
-                count[token] = count[token] + 1
+                count[token] += 1
             else:
                 count[token] = 1
 
     master_vocab = {}
-    for token in count:
-        master_vocab[token] = math.log2(float(n) / float(count[token]))
-
+    for token in count: master_vocab[token] = math.log2(float(n) / float(count[token]))
     return master_vocab
 
 
 def set_vector_repesentation(req_tokens, master_vocab):
     """
     sets a vector representation for each requirement in correspondence with the master vocabulary
-    req['vector'][word] = tf * master_vocab[word]
-    where tf is the frequency of word in req
+    req['vector'][token] = tf * master_vocab[token]
+    where tf is the frequency of token in req
     """
-    for req in req_tokens:
+    for requirement in req_tokens:
         vector = {}
-        for word in master_vocab:
+        for master_token in master_vocab:
             count = 0
-            for token in req['tokens']:
-                if token == word:
+            for req_token in requirement['tokens']:
+                if req_token == master_token:
                     count = count + 1
-            vector[word] = count * master_vocab[word]
-        req['vector'] = vector
+            vector[master_token] = count * master_vocab[master_token]
+        requirement['vector'] = vector
     return req_tokens
 
 
