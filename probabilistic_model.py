@@ -9,8 +9,8 @@ def calculate_probabilistic_similarity_matrix(low_tokens, high_tokens):
     print(high_tokens)
     print('------')
     vocabulary = set()
-    for h in low_tokens:
-        for w in h['tokens']:
+    for e in high_tokens + low_tokens:
+        for w in e['tokens']:
             vocabulary.add(w)
 
     for h in high_tokens:
@@ -19,12 +19,13 @@ def calculate_probabilistic_similarity_matrix(low_tokens, high_tokens):
             # sim(h, l) = Prod_w in l{P(w|h)}
             pos = 1
             for w in h['tokens']:
-                if w in vocabulary:
-                    pos *= calc_probability(vocabulary, w, l['tokens'])
+                # if w in vocabulary:
+                pos *= calc_probability(vocabulary, w, l['tokens'])
             sim_vector[l['id']] = pos
         sim_matrix[h['id']] = sim_vector
 
     print(sim_matrix)
+    print('------')
     return sim_matrix
 
 

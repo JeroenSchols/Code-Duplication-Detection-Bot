@@ -61,16 +61,28 @@ def relative_trace_links(sim_matrix):
     return trace_links
 
 
-def personal_trace_links(sim_matrix, match_type):
+def personal_trace_links_top_percentage(sim_matrix, match_type):
     trace_links = {}
     for h_id in sim_matrix:
+        max_sim = max(list(sim_matrix[h_id].values()))
         links = []
         for l_id in sim_matrix[h_id]:
-            if sim_matrix[h_id][l_id] >= 1 * pow(10, -match_type):
+            if sim_matrix[h_id][l_id] >= match_type / 100.0 * max_sim:
                 links.append(l_id)
         trace_links[h_id] = links
     return trace_links
 
 
-def generate_trace_links_probabilistic(low_tokens, high_tokens, match_type):
-    pass
+def personal_trace_links_top_x(sim_matrix, match_type):
+    trace_links = {}
+    for h_id in sim_matrix:
+        # Sort by value, descending
+        options = sorted(sim_matrix[h_id].items(), key=lambda x: x[1], reverse=True)
+
+        # Take the first few
+        trace_links[h_id] = [x[0] for x in options[:match_type]]
+    return trace_links
+
+
+def personal_trace_links(sim_matrix, match_type):
+    personal_trace_links_top_x(sim_matrix, match_type)
