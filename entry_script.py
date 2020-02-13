@@ -33,35 +33,43 @@ if __name__ == "__main__":
         print("Match type provided is not a valid number")
         exit(1)
 
-    print(f"Hello world, running with matchtype {match_type}!")
+    # Third parameter used for configuration of some of our measures provided
+    option = None
+    if len(sys.argv) >= 3:
+        try:
+            option = float(sys.argv[2])
+        except ValueError as e:
+            print("Extra option is not a valid number")
+            exit(1)
+
+    print(f"Hello world, running with matchtype {match_type}"
+          f"{(' and extra option ' + str(option)) if option is not None else ''}!")
 
     # Read input low-level requirements and count them (ignore header line).
     with open("/input/low.csv", "r") as inputfile:
         print(f"There are {len(inputfile.readlines()) - 1} low-level requirements")
 
-    '''
-    This is where you should implement the trace level logic as discussed in the 
-    assignment on Canvas. Please ensure that you take care to deliver clean,
-    modular, and well-commented code.
-    '''
-
+    # Parse and prepare the tokens of both documents
     low_tokens = parser.parse_and_preprocess_requirements(open("/input/low.csv", "r"))
     high_tokens = parser.parse_and_preprocess_requirements(open("/input/high.csv", "r"))
 
-    low_tokens, high_tokens = vector_representer.vectorize(low_tokens, high_tokens)
-
-    if match_type <= 2 and False:
+    if match_type <= 2:
+        # Match type that uses vector matching
+        low_tokens, high_tokens = vector_representer.vectorize(low_tokens, high_tokens)
         sim_matrix = vector_representer.calc_similarity_matrix(low_tokens, high_tokens)
     else:
-        sim_matrix = probabilistic_model.calculate_probabilistic_similarity_matrix(low_tokens, high_tokens)
+        # Match type that uses probabilistic matching
+        sim_matrix = probabilistic_model.calc_similarity_matrix(low_tokens, high_tokens)
 
-    # if match_type <= 3:
-    predicted_trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type)
-    # else:
-    #     predicted_trace_links = trace_link_generator.generate_trace_links_probablistic(low_tokens, high_tokens, match_type)
+    # Generate trace links from the similarity matrix
+    predicted_trace_links = trace_link_generator.generate_trace_links(sim_matrix, match_type, option)
+
+    # Write the trace links to the output file
     write_output_file(predicted_trace_links)
 
+    # Parse the file with actual human-made trace links
     true_trace_links = parser.parse_trace_links(open("/input/links.csv", "r"))
 
+    # Create and display the confusion matrix between the produced trace links and the human-made trace links
     conf_matrix = evaluator.create_confusion_matrix(predicted_trace_links, true_trace_links, low_tokens)
     print(conf_matrix)
