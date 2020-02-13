@@ -83,6 +83,25 @@ def personal_trace_links_top_x(sim_matrix, match_type):
         trace_links[h_id] = [x[0] for x in options[:match_type]]
     return trace_links
 
+def personal_trace_linkts_top_x_both_directions(sim_matrix, match_type):
+    trace_links = {}
+    for h_id in sim_matrix:
+        # Sort by value, descending
+        options = sorted(sim_matrix[h_id].items(), key=lambda x: x[1], reverse=True)
+
+        # Take the first few
+        trace_links[h_id] = [x[0] for x in options[:match_type]]
+    for l_id in list(sim_matrix.values())[0]:
+        options = dict()
+        for h_id in sim_matrix:
+            options[h_id] = sim_matrix[h_id][l_id]
+        options = sorted(options.items(), key=lambda x: x[1], reverse=True)
+
+        for h, _ in options[:match_type]:
+            if l_id not in trace_links[h]:
+                trace_links[h].append(l_id)
+    return trace_links
+
 
 def personal_trace_links(sim_matrix, match_type):
-    personal_trace_links_top_x(sim_matrix, match_type)
+    return personal_trace_links_top_x(sim_matrix, match_type)
