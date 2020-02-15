@@ -42,16 +42,13 @@ if __name__ == "__main__":
             print("Extra option is not a valid number")
             exit(1)
 
-    print(f"Hello world, running with matchtype {match_type}"
+    print(f"Running with matchtype {match_type}"
           f"{(' and extra option ' + str(option)) if option is not None else ''}!")
 
-    # Read input low-level requirements and count them (ignore header line).
-    with open("/input/low.csv", "r") as inputfile:
-        print(f"There are {len(inputfile.readlines()) - 1} low-level requirements")
-
     # Parse and prepare the tokens of both documents
-    low_tokens = parser.parse_and_preprocess_requirements(open("/input/low.csv", "r"))
-    high_tokens = parser.parse_and_preprocess_requirements(open("/input/high.csv", "r"))
+    lem_over_stem = False  # when True uses lemmatization instead of stemming
+    low_tokens = parser.parse_and_preprocess_requirements(open("/input/low.csv", "r"), lem_over_stem)
+    high_tokens = parser.parse_and_preprocess_requirements(open("/input/high.csv", "r"), lem_over_stem)
 
     if match_type <= 2:
         # Match type that uses vector matching

@@ -1,6 +1,7 @@
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk import word_tokenize
+from nltk.stem import WordNetLemmatizer
 import contractions
 
 
@@ -20,7 +21,7 @@ def parse_trace_links(inputFile):
     return trace_links
 
 
-def parse_and_preprocess_requirements(inputFile):
+def parse_and_preprocess_requirements(inputFile, lem_over_stem):
     """
     parse a high.csv or low.csv file
     removes stop words and stems words
@@ -28,7 +29,10 @@ def parse_and_preprocess_requirements(inputFile):
     """
     req_tokens = parse_requirements(inputFile)
     req_tokens = remove_stop_words(req_tokens)
-    req_tokens = stem_words(req_tokens)
+    if lem_over_stem:
+        req_tokens = lemmatize_words(req_tokens)
+    else:
+        req_tokens = stem_words(req_tokens)
     return req_tokens
 
 
@@ -59,6 +63,15 @@ def remove_stop_words(req_tokens):
     stop_words = set(stopwords.words('english'))
     for requirement in req_tokens:
         requirement['tokens'] = [word for word in requirement['tokens'] if not word in stop_words]
+    return req_tokens
+
+
+def lemmatize_words(req_tokens):
+    """
+    lematize words from the list of tokens
+    """
+    lemmatizer = WordNetLemmatizer()
+    for requirement in req_tokens: requirement['tokens'] = [lemmatizer.lemmatize(word) for word in requirement['tokens']]
     return req_tokens
 
 

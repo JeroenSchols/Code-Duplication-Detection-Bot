@@ -12,5 +12,6 @@ FROM python:3
  RUN pip install -r requirements.txt
  RUN python -W ignore -m nltk.downloader punkt
  RUN python -W ignore -m nltk.downloader stopwords
+ RUN python -W ignore -m nltk.downloader wordnet
 
  ENTRYPOINT [ "python", "./entry_script.py" ]   
