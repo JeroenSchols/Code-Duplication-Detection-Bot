@@ -1,5 +1,5 @@
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
+from nltk.stem import SnowballStemmer
 from nltk import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import contractions
@@ -79,6 +79,6 @@ def stem_words(req_tokens):
     """
     stem words from the list of tokens
     """
-    ps = PorterStemmer()
-    for requirement in req_tokens: requirement['tokens'] = [ps.stem(word) for word in requirement['tokens']]
+    stemmer = SnowballStemmer("english")
+    for requirement in req_tokens: requirement['tokens'] = [stemmer.stem(word) for word in requirement['tokens']]
     return req_tokens
