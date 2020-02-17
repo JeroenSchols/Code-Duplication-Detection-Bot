@@ -17,6 +17,18 @@ def write_output_file(trace_links):
     file.close()
 
 
+def latex_print_conf_matrix(conf_matrix):
+    cm = conf_matrix
+    print(f"\\confMatrix"
+          f"{{{cm['TP']}}}"
+          f"{{{cm['FN']}}}"
+          f"{{{cm['FP']}}}"
+          f"{{{cm['TN']}}}"
+          f"{{{cm['recall']}}}"
+          f"{{{cm['precision']}}}"
+          f"{{{cm['f-measure']}}}")
+
+
 if __name__ == "__main__":
     '''
     Entry point for the script
