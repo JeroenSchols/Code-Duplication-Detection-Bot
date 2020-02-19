@@ -18,6 +18,9 @@ def write_output_file(trace_links):
 
 
 def latex_print_conf_matrix(conf_matrix):
+    """
+    Print a confusion matrix as a LaTeX command call
+    """
     cm = conf_matrix
     print(f"\\confMatrix"
           f"{{{cm['TP']}}}"
@@ -82,3 +85,9 @@ if __name__ == "__main__":
     # Create and display the confusion matrix between the produced trace links and the human-made trace links
     conf_matrix = evaluator.create_confusion_matrix(predicted_trace_links, true_trace_links, low_tokens)
     print(conf_matrix)
+
+    # Uncomment to print the latex-style confusion matrix
+    # latex_print_conf_matrix(conf_matrix)
+
+    # Uncomment to print latex-style tables for correct, incorrect and missed links
+    # evaluator.print_generated_links(predicted_trace_links, true_trace_links, match_type)

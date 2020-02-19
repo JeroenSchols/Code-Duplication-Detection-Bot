@@ -14,7 +14,7 @@ def parse_trace_links(inputFile):
     for i, line in enumerate(inputFile):
         if i == 0: continue  # ignores the header
         high_id = line.split(',\"')[0]
-        low_ids = line.split('\"')[1].split(',')
+        low_ids = line.split('\"')[1].replace(" ", "").split(',')
         if low_ids[0] == '': low_ids = []
         trace_links[high_id] = low_ids
     inputFile.close()
